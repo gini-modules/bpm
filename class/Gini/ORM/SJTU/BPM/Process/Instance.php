@@ -5,7 +5,6 @@ namespace Gini\ORM\SJTU\BPM\Process;
 class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
 {
     public $process = 'object:sjtu/bpm/process';
-    public $hash = 'string:32';
     public $data = 'array';
     public $status = 'int,default:0';
 

@@ -36,8 +36,11 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
 
     public function autorun()
     {
-        if ($this->auto_callback) {
-            return $this->autorun();
+        if ($this->auto_callback && is_callable($this->auto_callback)) {
+            $return = call_user_func_array($this->auto_callback, [
+                $this
+            ]);
+            $return && $this->instance->next();
         }
     }
 }
