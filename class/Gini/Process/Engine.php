@@ -19,7 +19,7 @@ class Engine
     public function __construct($driverName, array $options=[])
     {
         $driverClass = '\Gini\Process\Engine\\' . $driverName;
-        $this->_driver = \Gini\IoC::construt($driverClass, $options);
+        $this->_driver = \Gini\IoC::construct($driverClass, $options);
         if (!$this->_driver instanceof \Gini\Process\IEngine) {
             throw new \Gini\Process\Engine\Exception();
         }

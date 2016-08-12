@@ -6,6 +6,10 @@ class_exists('\Gini\Those');
 
 class SJTU implements \Gini\Process\IEngine
 {
+    public function __construct()
+    {
+    }
+
     public function fetchProcessInstance($processName, $instancID)
     {
         $process = a('sjtu/bpm/process', ['name'=> $processName]);
@@ -44,5 +48,33 @@ class SJTU implements \Gini\Process\IEngine
     public function those($name)
     {
         return those($name);
+    }
+
+    public function getProcessGroups($processName, $version=null)
+    {
+        $criteria = ['name'=> $processName];
+        if ($version) {
+            $criteria['version'] = $version;
+        }
+        $process = a('sjtu/bpm/process', $criteria);
+        if (!$process->id) return [];
+        return those('sjtu/bpm/process/group')->whose('process')->is($process);
+    }
+
+    public function getProcessGroup($processName, $groupName, $processVersion=null)
+    {
+        $criteria = ['name'=> $processName];
+        if ($processVersion) {
+            $criteria['version'] = $processVersion;
+        }
+        $process = a('sjtu/bpm/process', $criteria);
+        if (!$process->id) return;
+
+        $group = a('sjtu/bpm/process/group', [
+            'process'=> $process,
+            'name'=> $groupName
+        ]);
+
+        return $group->id ? $group : null;
     }
 }
