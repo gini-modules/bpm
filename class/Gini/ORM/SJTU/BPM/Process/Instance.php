@@ -12,11 +12,16 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
 
     public function getVariable($key)
     {
+        // TODO
     }
 
     public function start()
     {
-        if ($this->task) return;
+        $task = those('sjtu/bpm/process/task')->whose('instance')->is($this)
+                ->orderBy('ctime', 'desc')
+                ->current();
+        if ($task->id) return;
+
         return $this->_execute();
     }
 

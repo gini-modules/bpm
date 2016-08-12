@@ -18,11 +18,8 @@ class SJTU implements \Gini\Process\IEngine
 
     public function startProcessInstance($processName, $data)
     {
-        if ($this->fetchProcessInstance($processName, $data)) {
-            throw new \Gini\Process\Engine\Exception();
-        }
-
-        $process = a('sjtu/bpm/process', ['name'=> $processName]);
+        $process = those('sjtu/bpm/process')->whose('name')->is($processName)
+                    ->orderBy('version', 'desc')->current();
         if (!$process->id) {
             throw new \Gini\Process\Engine\Exception();
         }

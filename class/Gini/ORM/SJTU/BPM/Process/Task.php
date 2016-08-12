@@ -18,6 +18,7 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
 
     public function claim($uid)
     {
+        // TODO
     }
 
     public function complete()
