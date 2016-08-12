@@ -1,0 +1,9 @@
+{
+    "id": "bpm",
+    "name": "BPM Process Engine Client",
+    "description": "App description...",
+    "version": "0.1.0",
+    "dependencies": {
+        "gini": "*"
+    }
+}
