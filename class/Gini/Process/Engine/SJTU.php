@@ -50,24 +50,18 @@ class SJTU implements \Gini\Process\IEngine
         return those($name);
     }
 
-    public function getProcessGroups($processName, $version=null)
+    public function getProcessGroups($processName)
     {
-        $criteria = ['name'=> $processName];
-        if ($version) {
-            $criteria['version'] = $version;
-        }
-        $process = a('sjtu/bpm/process', $criteria);
+        $process = those('sjtu/bpm/process')->whose('name')->is($processName)
+                    ->orderBy('version', 'asc')->current();
         if (!$process->id) return [];
         return those('sjtu/bpm/process/group')->whose('process')->is($process);
     }
 
-    public function getProcessGroup($processName, $groupName, $processVersion=null)
+    public function getProcessGroup($processName, $groupName)
     {
-        $criteria = ['name'=> $processName];
-        if ($processVersion) {
-            $criteria['version'] = $processVersion;
-        }
-        $process = a('sjtu/bpm/process', $criteria);
+        $process = those('sjtu/bpm/process')->whose('name')->is($processName)
+                    ->orderBy('version', 'asc')->current();
         if (!$process->id) return;
 
         $group = a('sjtu/bpm/process/group', [
@@ -76,5 +70,20 @@ class SJTU implements \Gini\Process\IEngine
         ]);
 
         return $group->id ? $group : null;
+    }
+
+    public function addProcessGroup($processName, $groupName, $data)
+    {
+        $process = those('sjtu/bpm/process')->whose('name')->is($processName)
+                    ->orderBy('version', 'asc')->current();
+        if (!$process->id) return;
+
+        $group = a('sjtu/bpm/process/group');
+        $group->process = $process;
+        $group->name = $groupName;
+        $group->title = $data['title'];
+        $group->description = $data['description'];
+
+        return !!$group->save();
     }
 }
