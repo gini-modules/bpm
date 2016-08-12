@@ -41,7 +41,9 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
             $return = call_user_func_array($this->auto_callback, [
                 $this
             ]);
-            $return && $this->instance->next();
+            if ($this->status==self::STATUS_PENDING) return;
+            $this->auto_callback_value = $return;
+            $this->instance->next();
         }
     }
 }

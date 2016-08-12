@@ -1,0 +1,46 @@
+{
+    "auto-select-school": {
+        "callback": "",
+        "switch": {
+            "school-a": "school-a",
+            "school-b": "school-b",
+            "reject": "reject"
+        }
+    },
+    "school-a": {
+        "group": "",
+        "approved": "baoweichu",
+        "unapproved": "reject"
+    },
+    "school-b": {
+        "group": "",
+        "approved": "baoweichu",
+        "unapproved": "reject"
+    },
+    "baoweichu": {
+        "group": "",
+        "approved": "zishichu",
+        "unapproved": "reject"
+    },
+    "zishichu": {
+        "group": "",
+        "approved": "anquanban",
+        "unapproved": "reject"
+    },
+    "anquanban": {
+        "group": "",
+        "approved": "weihuazhongxin",
+        "unapproved": "reject"
+    },
+    "weihuazhongxin": {
+        "group": "",
+        "approved": "pass",
+        "unapproved": "reject"
+    },
+    "reject": {
+        "callback": ""
+    },
+    "pass": {
+        "callback": ""
+    }
+}
