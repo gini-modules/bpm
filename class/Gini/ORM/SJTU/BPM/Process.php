@@ -23,7 +23,7 @@ class Process extends \Gini\ORM\Object
             return [$position, $rules[$position]];
         }
         else if ($task->status==\Gini\ORM\BPM\Process\Task::STATUS_UNAPPROVED) {
-            $position = $rule['disapproved'];
+            $position = $rule['unapproved'];
             return [$position, $rules[$position]];
         }
     }

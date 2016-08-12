@@ -7,7 +7,7 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
 {
     public $process = 'object:sjtu/bpm/process';
     public $instance = 'object:sjtu/bpm/process/instance';
-    public $candidate_group = 'object:group';
+    public $candidate_group = 'bigint';
     public $position = 'string:50';
     public $ctime = 'datetime';
     public $status = 'int';

@@ -72,9 +72,7 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
         if (isset($info['callback'])) {
             $task->auto_callback = $info['callback'];
         } else if (isset($info['group'])) {
-            $group = a('group', $info['group']);
-            if (!$group->id) return false;
-            $task->candidate_group = $group;
+            $task->candidate_group = $info['group'];
         }
         if (!$task->save()) return false;
 
