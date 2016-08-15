@@ -10,7 +10,9 @@ class SJTU extends \Gini\Controller\CLI
         if (!$name) return;
         $file = dirname(__FILE__).'/rules.json';
         $rules = json_decode(file_get_contents($file));
-        $process = a('sjtu/bpm/process');
+        $process = a('sjtu/bpm/process', [
+            'name'=> $name
+        ]);
         $process->name = $name;
         $process->ctime = date('Y-m-d H:i:s');
         $process->rules = $rules;
