@@ -38,7 +38,7 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
                 ->orderBy('ctime', 'desc')
                 ->current();
 
-        if ($task->id && $task->status == \Gini\ORM\SJTU\BPM\Process\Task::STATUS_PENDING) {
+        if ($task->id && !$task->isEnd()) {
             $task->autorun();
             return false;
         }
