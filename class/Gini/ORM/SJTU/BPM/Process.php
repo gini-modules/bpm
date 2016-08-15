@@ -9,6 +9,7 @@ class Process extends \Gini\ORM\Object
     public $parent = 'object:sjtu/bpm/process';
     public $version = 'int,default:0';
     public $ctime = 'datetime';
+    public $rules = 'array';
 
     public function getNextTaskInfo($task=null)
     {
