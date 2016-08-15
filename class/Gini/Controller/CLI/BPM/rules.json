@@ -1,46 +1,47 @@
 {
     "auto-select-school": {
-        "callback": "",
+        "callback": "\\Gini\\Controller\\CLI\\BPM\\SJTU\\Callback::autoselectschool",
         "switch": {
             "school-a": "school-a",
             "school-b": "school-b",
-            "reject": "reject"
+            "unapproved": "reject",
+            "approved": "pass"
         }
     },
     "school-a": {
-        "group": "",
+        "group": "school-a",
         "approved": "baoweichu",
         "unapproved": "reject"
     },
     "school-b": {
-        "group": "",
+        "group": "school-b",
         "approved": "baoweichu",
         "unapproved": "reject"
     },
     "baoweichu": {
-        "group": "",
+        "group": "baoweichu",
         "approved": "zishichu",
         "unapproved": "reject"
     },
     "zishichu": {
-        "group": "",
+        "group": "zishichu",
         "approved": "anquanban",
         "unapproved": "reject"
     },
     "anquanban": {
-        "group": "",
+        "group": "anquanban",
         "approved": "weihuazhongxin",
         "unapproved": "reject"
     },
     "weihuazhongxin": {
-        "group": "",
+        "group": "weihuazhongxin",
         "approved": "pass",
         "unapproved": "reject"
     },
     "reject": {
-        "callback": ""
+        "callback": "\\Gini\\Controller\\CLI\\BPM\\SJTU\\Callback::reject"
     },
     "pass": {
-        "callback": ""
+        "callback": "\\Gini\\Controller\\CLI\\BPM\\SJTU\\Callback::pass"
     }
 }
