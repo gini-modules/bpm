@@ -19,6 +19,7 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
     {
         $task = those('sjtu/bpm/process/task')->whose('instance')->is($this)
                 ->orderBy('ctime', 'desc')
+                ->orderBy('id', 'desc')
                 ->current();
         if ($task->id) return;
 
@@ -36,6 +37,7 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
 
         $task = those('sjtu/bpm/process/task')->whose('instance')->is($this)
                 ->orderBy('ctime', 'desc')
+                ->orderBy('id', 'desc')
                 ->current();
 
         if ($task->id && !$task->isEnd()) {
