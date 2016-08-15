@@ -20,7 +20,7 @@ class Process extends \Gini\ORM\Object
         $position = $task->position;
         $rule = $rules[$position];
         if ($task->auto_callback) {
-            if (isset($task->auto_callback_value)) {
+            if (!is_null($task->auto_callback_value)) {
                 $switch = $rule['switch'];
                 $position = $switch[$task->auto_callback_value];
                 if (isset($rules[$position])) {
@@ -28,13 +28,13 @@ class Process extends \Gini\ORM\Object
                 }
             }
         } else {
-            if ($task->status==\Gini\ORM\BPM\Process\Task::STATUS_APPROVED) {
+            if ($task->status==\Gini\ORM\SJTU\BPM\Process\Task::STATUS_APPROVED) {
                 $position = $rule['approved'];
                 if (isset($rules[$position])) {
                     return [$position, $rules[$position]];
                 }
             }
-            else if ($task->status==\Gini\ORM\BPM\Process\Task::STATUS_UNAPPROVED) {
+            else if ($task->status==\Gini\ORM\SJTU\BPM\Process\Task::STATUS_UNAPPROVED) {
                 $position = $rule['unapproved'];
                 if (isset($rules[$position])) {
                     return [$position, $rules[$position]];

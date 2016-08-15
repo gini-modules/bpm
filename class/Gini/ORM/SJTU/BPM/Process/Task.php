@@ -11,6 +11,8 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
     public $position = 'string:50';
     public $ctime = 'datetime';
     public $status = 'int';
+    // auto task的开始执行时间
+    public $run_date = 'datetime';
 
     const STATUS_PENDING = 0;
     const STATUS_RUNNING = 1;
@@ -32,8 +34,7 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
         foreach ($data as $k=>$v) {
             $this->$k = $v;
         }
-        $this->save();
-        return $this;
+        return $this->save();
     }
 
     public function pass($message=null)
@@ -62,10 +63,30 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
         ]);
     }
 
+    public function autoApprove($switch, $message=null)
+    {
+        return $this->update([
+            'status'=> self::STATUS_APPROVED,
+            'auto_callback_value'=> $switch,
+            'message'=> $message
+        ]);
+    }
+
+    public function autoReject($switch, $message=null)
+    {
+        return $this->update([
+            'status'=> self::STATUS_UNAPPROVED,
+            'auto_callback_value'=> $switch,
+            'message'=> $message
+        ]);
+    }
+
     public function autorun()
     {
         if ($this->isEnd()) return;
         if (!$this->auto_callback || !is_callable($this->auto_callback)) return;
+
+        if ($this->status==self::STATUS_RUNNING) return;
 
         $this->update([
             'status'=> self::STATUS_RUNNING,

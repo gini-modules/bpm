@@ -48,4 +48,22 @@ class SJTU extends \Gini\Controller\CLI
 
         echo "group#{$group->id}#{$group->name}\n";
     }
+
+    public function actionTest()
+    {
+        $processName = 'order-review-process';
+        $engine = \Gini\Process\Engine::of('default');
+        $instance = $engine->fetchProcessInstance($processName, 1);
+        $instance->start();
+        $instance->next();
+/*
+        $tasks = $engine->those('task')->whose('process')->is('xxx')->whose('candidate_gro
+    5.        $task = $engine->getTask($task_id);
+              $task->claim($me->id);
+              $task->complete();
+              $task->update([
+                  'status' => 'xxx'
+              ]);
+*/
+    }
 }
