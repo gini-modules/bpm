@@ -42,5 +42,41 @@ class Process extends \Gini\ORM\Object
             }
         }
     }
+
+    public function getGroups($user=null)
+    {
+        $result = those('sjtu/bpm/process/group')->whose('process')->is($this);
+        if (!is_null($user)) {
+            $gus = those('sjtu/bpm/process/group/user')->whose('user')->is($user);
+            $gids = [];
+            foreach ($gus as $gu) {
+                $gids[] = $gu->group->id;
+            }
+            $result = those('sjtu/bpm/process/group')->whose('process')->is($this)
+                    ->whose('id')->isIn($gids);
+        }
+        return $result;
+    }
+
+    public function getGroup($groupName)
+    {
+        $group = a('sjtu/bpm/process/group', [
+            'process'=> $this,
+            'name'=> $groupName
+        ]);
+
+        return $group->id ? $group : null;
+    }
+
+    public function addGroup($groupName, $data)
+    {
+        $group = a('sjtu/bpm/process/group');
+        $group->process = $this;
+        $group->name = $groupName;
+        $group->title = $data['title'];
+        $group->description = $data['description'];
+
+        return !!$group->save();
+    }
 }
 

@@ -10,9 +10,23 @@ class SJTU implements \Gini\Process\IEngine
     {
     }
 
+    public function getProcess($processName, $version=null)
+    {
+        if (!is_null($version)) {
+            $process = a('sjtu/bpm/process', [
+                'name'=> $processName,
+                'version'=> $version
+            ]);
+        } else {
+            $process = those('sjtu/bpm/process')->whose('name')->is($processName)
+                        ->orderBy('version', 'desc')->current();
+        }
+        return $process;
+    }
+
     public function fetchProcessInstance($processName, $instancID)
     {
-        $process = a('sjtu/bpm/process', ['name'=> $processName]);
+        $process = $this->getProcess($processName);
         if (!$process->id) return false;
 
         $instance = a('sjtu/bpm/process/instance', $instancID);
@@ -22,8 +36,7 @@ class SJTU implements \Gini\Process\IEngine
 
     public function startProcessInstance($processName, $data)
     {
-        $process = those('sjtu/bpm/process')->whose('name')->is($processName)
-                    ->orderBy('version', 'desc')->current();
+        $process = $this->getProcess($processName);
         if (!$process->id) {
             throw new \Gini\Process\Engine\Exception();
         }
@@ -47,43 +60,6 @@ class SJTU implements \Gini\Process\IEngine
 
     public function those($name)
     {
-        return those($name);
-    }
-
-    public function getProcessGroups($processName)
-    {
-        $process = those('sjtu/bpm/process')->whose('name')->is($processName)
-                    ->orderBy('version', 'asc')->current();
-        if (!$process->id) return [];
-        return those('sjtu/bpm/process/group')->whose('process')->is($process);
-    }
-
-    public function getProcessGroup($processName, $groupName)
-    {
-        $process = those('sjtu/bpm/process')->whose('name')->is($processName)
-                    ->orderBy('version', 'asc')->current();
-        if (!$process->id) return;
-
-        $group = a('sjtu/bpm/process/group', [
-            'process'=> $process,
-            'name'=> $groupName
-        ]);
-
-        return $group->id ? $group : null;
-    }
-
-    public function addProcessGroup($processName, $groupName, $data)
-    {
-        $process = those('sjtu/bpm/process')->whose('name')->is($processName)
-                    ->orderBy('version', 'asc')->current();
-        if (!$process->id) return;
-
-        $group = a('sjtu/bpm/process/group');
-        $group->process = $process;
-        $group->name = $groupName;
-        $group->title = $data['title'];
-        $group->description = $data['description'];
-
-        return !!$group->save();
+        return those("sjtu/bpm/process/{$name}");
     }
 }

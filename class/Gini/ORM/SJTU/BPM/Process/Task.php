@@ -14,11 +14,6 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
     // auto task的开始执行时间
     public $run_date = 'datetime';
 
-    const STATUS_PENDING = 0;
-    const STATUS_RUNNING = 1;
-    const STATUS_APPROVED = 2;
-    const STATUS_UNAPPROVED = 3;
-
     public function claim($uid)
     {
         // TODO
