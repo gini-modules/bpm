@@ -8,11 +8,10 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
     public $data = 'array';
     public $status = 'int,default:0';
 
-    const STATUS_END = '-1';
-
     public function getVariable($key)
     {
-        // TODO
+        $data = (array)$this->data;
+        return $data[$key];
     }
 
     public function start()
@@ -44,7 +43,7 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
             $task->autorun();
             return false;
         }
- 
+
         $info = $this->process->getNextTaskInfo($task->id ? $task : null);
         if (empty($info)) {
             $this->status = self::STATUS_END;

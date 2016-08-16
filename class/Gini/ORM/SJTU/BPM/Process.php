@@ -78,5 +78,53 @@ class Process extends \Gini\ORM\Object
 
         return !!$group->save();
     }
+
+    public function getInstances($start=0, $perpage=25, $user=null)
+    {
+        $sql = "SELECT DISTINCT instance_id AS id FROM sjtu_bpm_process_task WHERE process_id={$this->id}";
+
+        if (!is_null($user)) {
+            $groups = $this->getGroups($user);
+            $gids = [];
+            foreach ($groups as $group) {
+                $gids[] = $group->id;
+            }
+            if (empty($gids)) return;
+            $gids = implode(',', $gids);
+            $sql = "{$sql} AND candidate_group_id IN ({$gids})";
+        }
+
+        $sql = "{$sql} LIMIT {$start},{$perpage}";
+        $db = \Gini\Database::db();
+        $query = $db->query($sql);
+        $instances = [];
+        if ($query) foreach ($query->rows() as $obj) {
+            $instances[$obj->id] = a('sjtu/bpm/process/instance', $obj->id);
+        }
+
+        return $instances;
+    }
+
+    public function searchInstances($user=null)
+    {
+        $sql = "SELECT count(DISTINCT instance_id) FROM sjtu_bpm_process_task WHERE process_id={$this->id}";
+
+        if (!is_null($user)) {
+            $groups = $this->getGroups($user);
+            $gids = [];
+            foreach ($groups as $group) {
+                $gids[] = $group->id;
+            }
+            if (empty($gids)) return;
+            $gids = implode(',', $gids);
+            $sql = "{$sql} AND candidate_group_id IN ({$gids})";
+        }
+
+        $db = \Gini\Database::db();
+        $query = $db->query($sql);
+        if (!$query) return;
+
+        return $query->value();
+    }
 }
 

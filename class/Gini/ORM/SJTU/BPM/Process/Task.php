@@ -32,12 +32,12 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
         return $this->save();
     }
 
-    public function pass($message=null)
+    public function approve($message=null)
     {
         return $this->update([
             'status'=> self::STATUS_APPROVED,
             'message'=> $message,
-            'pass_date'=> date('Y-m-d H:i:s')
+            'date'=> date('Y-m-d H:i:s')
         ]);
     }
 
@@ -46,7 +46,7 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
         return $this->update([
             'status'=> self::STATUS_UNAPPROVED,
             'message'=> $message,
-            'reject_date'=> date('Y-m-d H:i:s')
+            'date'=> date('Y-m-d H:i:s')
         ]);
     }
 
@@ -63,6 +63,7 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
         return $this->update([
             'status'=> self::STATUS_APPROVED,
             'auto_callback_value'=> $switch,
+            'auto_approve_date'=> date('Y-m-d H:i:s'),
             'message'=> $message
         ]);
     }
@@ -72,6 +73,7 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
         return $this->update([
             'status'=> self::STATUS_UNAPPROVED,
             'auto_callback_value'=> $switch,
+            'auto_reject_date'=> date('Y-m-d H:i:s'),
             'message'=> $message
         ]);
     }
