@@ -10,7 +10,7 @@ class Engine
     {
         if (!isset(self::$_engines[$name])) {
             $opts = \Gini\Config::get('bpm-process-engine.'.$name);
-            self::$_engines[$name] = \Gini\IoC::construct('\Gini\Process\Engine', $opts['driver'], (array)$opts['options']);
+            self::$_engines[$name] = \Gini\IoC::construct('\Gini\Process\Engine', $opts['driver'], (array)@$opts['options']);
         }
         return self::$_engines[$name];
     }
