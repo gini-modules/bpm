@@ -58,7 +58,7 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
         ]);
     }
 
-    public function autoApprove($switch, $message=null)
+    public function autoApprove($message=null, $switch='approved')
     {
         return $this->update([
             'status'=> self::STATUS_APPROVED,
@@ -68,7 +68,7 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
         ]);
     }
 
-    public function autoReject($switch, $message=null)
+    public function autoReject($message=null, $switch='unapproved')
     {
         return $this->update([
             'status'=> self::STATUS_UNAPPROVED,
