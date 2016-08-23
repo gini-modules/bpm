@@ -9,32 +9,44 @@
         }
     },
     "school-a": {
-        "group": "school-a",
+        "group": "school-a", 
+        "group-title": "School-A",
+        "group-description": "School-A",
         "approved": "baoweichu",
         "unapproved": "reject"
     },
     "school-b": {
         "group": "school-b",
+        "group-title": "School-B",
+        "group-description": "School-B",
         "approved": "baoweichu",
         "unapproved": "reject"
     },
     "baoweichu": {
         "group": "baoweichu",
+        "group-title": "保卫处",
+        "group-description": "保卫处",
         "approved": "zishichu",
         "unapproved": "reject"
     },
     "zishichu": {
         "group": "zishichu",
+        "group-title": "资实处",
+        "group-description": "资实处",
         "approved": "anquanban",
         "unapproved": "reject"
     },
     "anquanban": {
         "group": "anquanban",
+        "group-title": "安全办",
+        "group-description": "安全办",
         "approved": "weihuazhongxin",
         "unapproved": "reject"
     },
     "weihuazhongxin": {
         "group": "weihuazhongxin",
+        "group-title": "危化中心",
+        "group-description": "危化中心",
         "approved": "pass",
         "unapproved": "reject"
     },

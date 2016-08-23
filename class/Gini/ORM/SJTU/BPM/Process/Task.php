@@ -83,11 +83,15 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
         if ($this->isEnd()) return;
         if (!$this->auto_callback || !is_callable($this->auto_callback)) return;
 
-        if ($this->status==self::STATUS_RUNNING) return;
+        if ($this->status==self::STATUS_RUNNING) {
+            $pid = $this->run_pid;
+            if (file_exists("/proc/{$pid}")) return;
+        }
 
         $this->update([
             'status'=> self::STATUS_RUNNING,
-            'run_date'=> date('Y-m-d H:i:s')
+            'run_date'=> date('Y-m-d H:i:s'),
+            'run_pid'=> getmypid()
         ]);
 
         call_user_func_array($this->auto_callback, [
