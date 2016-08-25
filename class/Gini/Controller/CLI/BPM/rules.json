@@ -2,23 +2,23 @@
     "auto-select-school": {
         "callback": "\\Gini\\Controller\\CLI\\BPM\\SJTU\\Callback::autoselectschool",
         "switch": {
-            "school-a": "school-a",
-            "school-b": "school-b",
+            "school#01": "school#01",
+            "school#02": "school#02",
             "unapproved": "reject",
             "approved": "pass"
         }
     },
-    "school-a": {
-        "group": "school-a", 
-        "group-title": "School-A",
-        "group-description": "School-A",
+    "school#01": {
+        "group": "school#01", 
+        "group-title": "School 01",
+        "group-description": "School # 01",
         "approved": "baoweichu",
         "unapproved": "reject"
     },
-    "school-b": {
-        "group": "school-b",
-        "group-title": "School-B",
-        "group-description": "School-B",
+    "school#02": {
+        "group": "school#02",
+        "group-title": "School 02",
+        "group-description": "School # 02",
         "approved": "baoweichu",
         "unapproved": "reject"
     },
