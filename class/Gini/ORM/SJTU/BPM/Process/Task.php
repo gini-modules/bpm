@@ -44,9 +44,9 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
 
     private function _doUpdate($data, $description)
     {
-        $instance = $task->instance;
-        $data = (array)$instance->getVariable('data');
-        $voucher = $data['voucher'];
+        $instance = $this->instance;
+        $orderData = (array)$instance->getVariable('data');
+        $voucher = $orderData['voucher'];
         if (!$voucher) return;
         $rpc = self::_getRPC('order');
         if (!$rpc) return;

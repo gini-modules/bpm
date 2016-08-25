@@ -7,6 +7,11 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
     public $process = 'object:sjtu/bpm/process';
     public $data = 'array';
     public $status = 'int,default:0';
+    public $last_run_time = 'datetime';
+
+    protected static $db_index = [
+        'last_run_time'
+    ];
 
     public function getVariable($key)
     {

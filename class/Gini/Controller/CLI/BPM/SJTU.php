@@ -77,36 +77,4 @@ class SJTU extends \Gini\Controller\CLI
         }
     }
 
-    public function actionTest()
-    {
-        $processName = 'order-review-process';
-        $engine = \Gini\Process\Engine::of('default');
-        // return $engine->startProcessInstance($processName, ['data'=>[
-        //     'id'=> 1,
-        //     'voucher'=> 'M201608020001',
-        //     'price'=> round('1000', 2),
-        //     'ctime'=> date('Y-m-d H:i:s'),
-        //     'status'=> 1,
-        //     'group_id'=> 1,
-        //     'vendor_id'=> 1,
-        //     'user_id'=> 1,
-        //     'items'=> [
-        //          [
-        //              'cas_no'=> '12-20-1'
-        //          ]
-        //     ]
-        // ]]);
-        $instance = $engine->fetchProcessInstance($processName, 1);
-        $instance->start();
-        $instance->next();
-/*
-        $tasks = $engine->those('task')->whose('process')->is('xxx')->whose('candidate_gro
-    5.        $task = $engine->getTask($task_id);
-              $task->claim($me->id);
-              $task->complete();
-              $task->update([
-                  'status' => 'xxx'
-              ]);
-*/
-    }
 }
