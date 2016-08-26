@@ -65,7 +65,9 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
         $upData = [
             'status'=> self::STATUS_APPROVED,
             'message'=> $message,
-            'date'=> $now
+            'date'=> $now,
+            'group'=> $this->candidate_group->title,
+            'user'=> $user->name
         ];
         $description = [
             'a' => T('**:group** **:name** **审核通过** 了该订单', [
@@ -79,13 +81,16 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
         return $this->_doUpdate($upData, $description);
     }
 
-    public function reject($message=null)
+    public function reject($message=null, $user=null)
     {
         $now = date('Y-m-d H:i:s');
+        $user = $user ?: _G('ME');
         $upData = [
             'status'=> self::STATUS_UNAPPROVED,
             'message'=> $message,
-            'date'=> $now
+            'date'=> $now,
+            'group'=> $this->candidate_group->title,
+            'user'=> $user->name
         ];
         $user = $user ?: _G('ME');
         $description = [
@@ -107,7 +112,9 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
             'status'=> self::STATUS_APPROVED,
             'auto_callback_value'=> $switch,
             'auto_approve_date'=> date('Y-m-d H:i:s'),
-            'message'=> $message
+            'message'=> $message,
+            'group'=> '',
+            'user'=> T('系统')
         ];
         $description = [
             'a' => T('**系统** 自动 **审核通过** 了该订单'),
@@ -124,7 +131,9 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
             'status'=> self::STATUS_UNAPPROVED,
             'auto_callback_value'=> $switch,
             'auto_reject_date'=> date('Y-m-d H:i:s'),
-            'message'=> $message
+            'message'=> $message,
+            'group'=> '',
+            'user'=> T('系统')
         ];
         $description = [
             'a' => T('**系统** 自动 **拒绝** 了该订单'),
