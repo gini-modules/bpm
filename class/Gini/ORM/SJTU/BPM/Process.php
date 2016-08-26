@@ -94,7 +94,7 @@ class Process extends \Gini\ORM\Object
             $sql = "{$sql} AND candidate_group_id IN ({$gids})";
         }
 
-        $sql = "{$sql} LIMIT {$start},{$perpage}";
+        $sql = "{$sql} ORDER BY id DESC LIMIT {$start},{$perpage}";
         $db = \Gini\Database::db();
         $query = $db->query($sql);
         $instances = [];
