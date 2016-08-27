@@ -32,7 +32,7 @@ class Group extends \Gini\ORM\Object implements \Gini\Process\IGroup
             'group'=> $this,
             'user'=> $user
         ]);
-        if ($gu->id) return true;
+        if ($gu->id) return false;
 
         $gu->group = $this;
         $gu->user = $user;
