@@ -10,4 +10,6 @@ interface IProcess
     public function getGroups($user=null);
     public function getGroup($groupName);
     public function addGroup($groupName, $data);
+    public function removeGroup($groupName);
+    public function updateGroup($groupName, $data);
 }

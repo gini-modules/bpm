@@ -12,7 +12,7 @@ class Group extends \Gini\ORM\Object implements \Gini\Process\IGroup
     public $process = 'object:sjtu/bpm/process';
 
     protected static $db_index = [
-        'unique:name',
+        'unique:name,process',
     ];
 
     public function getUsers()

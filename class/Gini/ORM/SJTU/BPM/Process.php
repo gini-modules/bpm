@@ -79,6 +79,37 @@ class Process extends \Gini\ORM\Object
         return !!$group->save();
     }
 
+    public function removeGroup($groupName)
+    {
+        $group = a('sjtu/bpm/process/group', ['name'=>$groupName, 'process'=>$this]);
+        if (!$group->id) return false;
+        $db = \Gini\Database::db();
+        $db->beginTransaction();
+        try {
+            $sql = "DELETE FROM sjtu_bpm_process_group_user WHERE group_id={$group->id}";
+            if (!$db->query($sql)) {
+                throw new \Exception();
+            }
+            if (!$group->delete()) {
+                throw new \Exception();
+            }
+            $db->commit();
+        } catch (\Exception $e) {
+            $db->rollback();
+            return false;
+        }
+        return true;
+    }
+
+    public function updateGroup($groupName, $data)
+    {
+        $group = a('sjtu/bpm/process/group', ['name'=>$groupName, 'process'=>$this]);
+        if (!$group->id) return false;
+        $group->title = $data['title'];
+        $group->description = $data['description'];
+        return !!$group->save();
+    }
+
     public function getInstances($start=0, $perpage=25, $user=null)
     {
         $sql = "SELECT DISTINCT instance_id AS id FROM sjtu_bpm_process_task WHERE process_id={$this->id}";
