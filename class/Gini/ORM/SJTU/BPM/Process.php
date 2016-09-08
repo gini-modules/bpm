@@ -22,9 +22,19 @@ class Process extends \Gini\ORM\Object
         if ($task->auto_callback) {
             if (!is_null($task->auto_callback_value)) {
                 $switch = $rule['switch'];
-                $position = $switch[$task->auto_callback_value];
-                if (isset($rules[$position])) {
+                $pregSwitch = $rule['switch-preg'];
+                if (isset($rules[$task->auto_callback_value])) {
+                    $position = $switch[$task->auto_callback_value];
                     return [$position, $rules[$position]];
+                }
+                if (!empty($pregSwitch)) {
+                    foreach ($pregSwitch as $pattern=>$pos) {
+                        if (preg_match($pattern, $task->auto_callback_value)) {
+                            $tmpRule = (array) $rules[$pos];
+                            $tmpRule['group'] = $task->auto_callback_value;
+                            return [$task->auto_callback_value, $tmpRule];
+                        }
+                    }
                 }
             }
         } else {

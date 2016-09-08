@@ -79,7 +79,8 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
             $task->auto_callback = $info['callback'];
         } else if (isset($info['group'])) {
             $group = a('sjtu/bpm/process/group', [
-                'name'=> $info['group']
+                'name'=> $info['group'],
+                'process'=> $this->process
             ]);
             if (!$group->id) return false;
             $task->candidate_group = $group;
