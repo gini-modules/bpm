@@ -8,9 +8,11 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
     public $data = 'array';
     public $status = 'int,default:0';
     public $last_run_time = 'datetime';
+    public $tag = 'string:30';
 
     protected static $db_index = [
-        'last_run_time'
+        'unique:tag',
+        'last_run_time',
     ];
 
     public function getVariable($key)

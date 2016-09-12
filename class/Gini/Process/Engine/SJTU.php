@@ -34,7 +34,7 @@ class SJTU implements \Gini\Process\IEngine
         return $instance->id ? $instance : false;
     }
 
-    public function startProcessInstance($processName, $data)
+    public function startProcessInstance($processName, $data, $tag)
     {
         $process = $this->getProcess($processName);
         if (!$process->id) {
@@ -44,6 +44,7 @@ class SJTU implements \Gini\Process\IEngine
         $instance = a('sjtu/bpm/process/instance');
         $instance->process = $process;
         $instance->data = $data;
+        $instance->tag = $tag;
         if (!$instance->save()) {
             throw new \Gini\Process\Engine\Exception();
         }
