@@ -32,7 +32,7 @@ class Process extends \Gini\ORM\Object
                         if (preg_match($pattern, $task->auto_callback_value)) {
                             $tmpRule = (array) $rules[$pos];
                             $tmpRule['group'] = $task->auto_callback_value;
-                            return [$task->auto_callback_value, $tmpRule];
+                            return [$pos, $tmpRule];
                         }
                     }
                 }
