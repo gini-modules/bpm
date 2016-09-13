@@ -23,7 +23,7 @@ class Process extends \Gini\ORM\Object
             if (!is_null($task->auto_callback_value)) {
                 $switch = $rule['switch'];
                 $pregSwitch = $rule['switch-preg'];
-                if (isset($rules[$task->auto_callback_value])) {
+                if (isset($switch[$task->auto_callback_value])) {
                     $position = $switch[$task->auto_callback_value];
                     return [$position, $rules[$position]];
                 }
