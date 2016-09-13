@@ -50,9 +50,14 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
         if (!$voucher) return;
         $rpc = self::_getRPC('order');
         if (!$rpc) return;
-        $bool = $rpc->mall->order->updateOrder($voucher, [
-            'description'=> $description
-        ]);
+        try {
+            $bool = $rpc->mall->order->updateOrder($voucher, [
+                'description'=> $description,
+                'hash_rand_key'=> date('Y-m-d H:i:s'),
+            ]);
+        } catch (\Exception $e) {
+            return;
+        }
         if (!$bool) return;
         $bool = $this->update($data);
         return $bool;
