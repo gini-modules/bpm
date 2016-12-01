@@ -42,21 +42,18 @@ class SJTU implements \Gini\Process\IEngine
         }
 
         $instance = a('sjtu/bpm/process/instance', ['tag'=> $tag]);
-        $statusEnd = \Gini\Process\IInstance::STATUS_END;
-        if (!$instance->id) {
-            $instance->tag = $tag;
-        } else if ($instance->status != $statusEnd) {
-            throw new \Gini\Process\Engine\Exception();
-        } else {
-            $instance->status = 0;
-        }
+        if ($instance->id) {
+            $isRestart = true;
+        } 
+
         $instance->process = $process;
         $instance->data = $data;
+        $instance->tag = $tag;
         if (!$instance->save()) {
             throw new \Gini\Process\Engine\Exception();
         }
 
-        $instance->start();
+        $instance->start($isRestart);
 
         return $instance;
     }

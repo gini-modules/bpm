@@ -21,7 +21,7 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
         return $data[$key];
     }
 
-    public function start()
+    public function start($isRestart = false)
     {
         $task = those('sjtu/bpm/process/task')->whose('instance')->is($this)
                 ->orderBy('ctime', 'desc')
@@ -29,7 +29,7 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
                 ->current();
         if ($task->id) return;
 
-        return $this->_execute();
+        return $this->_execute($isRestart);
     }
 
     public function next()
@@ -37,21 +37,26 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
         return $this->_execute();
     }
 
-    private function _execute()
+    private function _execute($isRestart = false)
     {
-        if ($this->status==self::STATUS_END) return;
+        if ($isRestart) {
+            $this->status = 0;
+            $this->save();
+            $info = $this->process->getNextTaskInfo();
+        } else {
+            if ($this->status==self::STATUS_END) return;
+            $task = those('sjtu/bpm/process/task')->whose('instance')->is($this)
+                    ->orderBy('ctime', 'desc')
+                    ->orderBy('id', 'desc')
+                    ->current();
 
-        $task = those('sjtu/bpm/process/task')->whose('instance')->is($this)
-                ->orderBy('ctime', 'desc')
-                ->orderBy('id', 'desc')
-                ->current();
-
-        if ($task->id && !$task->isEnd()) {
-            $task->autorun();
-            return false;
+            if ($task->id && !$task->isEnd()) {
+                $task->autorun();
+                return false;
+            }
+            $info = $this->process->getNextTaskInfo($task->id ? $task : null);
         }
 
-        $info = $this->process->getNextTaskInfo($task->id ? $task : null);
         if (empty($info)) {
             $this->status = self::STATUS_END;
             $this->save();
