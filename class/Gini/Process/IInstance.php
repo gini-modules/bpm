@@ -7,6 +7,6 @@ interface IInstance
     const STATUS_END = '-1';
 
     public function getVariable($key);
-    public function start();
+    public function start($isRestart=false);
     public function next();
 }

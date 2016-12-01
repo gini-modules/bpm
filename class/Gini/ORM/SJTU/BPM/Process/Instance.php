@@ -23,11 +23,13 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
 
     public function start($isRestart = false)
     {
-        $task = those('sjtu/bpm/process/task')->whose('instance')->is($this)
-                ->orderBy('ctime', 'desc')
-                ->orderBy('id', 'desc')
-                ->current();
-        if ($task->id) return;
+        if (!$isRestart) {
+            $task = those('sjtu/bpm/process/task')->whose('instance')->is($this)
+                    ->orderBy('ctime', 'desc')
+                    ->orderBy('id', 'desc')
+                    ->current();
+            if ($task->id) return;
+        }
 
         return $this->_execute($isRestart);
     }
