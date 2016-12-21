@@ -95,7 +95,8 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
             $task->candidate_group = $group;
         }
         if (!$task->save()) return false;
-
+        $giniFullName = $_SERVER['GINI_SYS_PATH'].'/bin/gini';
+        exec("{$giniFullName} bpm task run ".$task->id. " > /dev/null 2>&1 &");
         return $task;
     }
 }
