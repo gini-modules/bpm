@@ -44,20 +44,11 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
 
     private function _doUpdate($data, $description)
     {
-        $instance = $this->instance;
-        $orderData = (array)$instance->getVariable('data');
-        $voucher = $orderData['voucher'];
-        if (!$voucher) return;
-        $rpc = self::_getRPC('order');
-        if (!$rpc) return;
-        try {
-            $bool = $rpc->mall->order->updateOrder($voucher, [
-                'description'=> $description,
-                'hash_rand_key'=> date('Y-m-d H:i:s'),
-            ]);
-        } catch (\Exception $e) {
-            return;
+        $customizedMethod = ['\\Gini\\Process\\Engine\\SJTU\\Task', 'doUpdate'];
+        if (method_exists($customizedMethod)) {
+            $bool = call_user_func($customizedMethod, $task, $description);
         }
+
         if (!$bool) return;
         $bool = $this->update($data);
         return $bool;
@@ -75,7 +66,7 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
             'user'=> $user->name
         ];
         $description = [
-            'a' => T('**:group** **:name** **审核通过** 了该订单', [
+            'a' => T('**:group** **:name** **审核通过**', [
                 ':group'=> $this->candidate_group->title,
                 ':name' => $user->name
             ]),
@@ -99,7 +90,7 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
         ];
         $user = $user ?: _G('ME');
         $description = [
-            'a' => T('**:group** **:name** **拒绝** 了该订单', [
+            'a' => T('**:group** **:name** **拒绝**', [
                 ':group'=> $this->candidate_group->title,
                 ':name' => $user->name
             ]),
@@ -122,7 +113,7 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
             'user'=> T('系统')
         ];
         $description = [
-            'a' => $message ?: T('**系统** 自动 **审核通过** 了该订单'),
+            'a' => $message ?: T('**系统** 自动 **审核通过**'),
             't' => $now,
             'd' => $message,
         ];
@@ -141,7 +132,7 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
             'user'=> T('系统')
         ];
         $description = [
-            'a' => T('**系统** 自动 **拒绝** 了该订单'),
+            'a' => T('**系统** 自动 **拒绝**'),
             't' => $now,
             'd' => $message,
         ];
@@ -167,31 +158,6 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
         call_user_func_array($this->auto_callback, [
             $this
         ]);
-    }
-
-    // 订单的更新直接向lab-orders进行提交, 因为hub-orders没有自购订单的信息
-    private static $_RPCs = [];
-    private static function _getRPC($type)
-    {
-        $confs = \Gini\Config::get('app.rpc');
-        if (!isset($confs[$type])) {
-            return;
-        }
-        $conf = $confs[$type] ?: [];
-        if (!self::$_RPCs[$type]) {
-            $rpc = \Gini\IoC::construct('\Gini\RPC', $conf['url']);
-            self::$_RPCs[$type] = $rpc;
-            $clientID = $conf['client_id'];
-            $clientSecret = $conf['client_secret'];
-            $token = $rpc->mall->authorize($clientID, $clientSecret);
-            if (!$token) {
-                \Gini\Logger::of(APP_ID)
-                    ->error('Mall\\RObject getRPC: authorization failed with {client_id}/{client_secret} !',
-                        ['client_id' => $clientID, 'client_secret' => $clientSecret]);
-            }
-        }
-
-        return self::$_RPCs[$type];
     }
 }
 
