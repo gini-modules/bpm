@@ -45,8 +45,8 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
     private function _doUpdate($data, $description)
     {
         $customizedMethod = ['\\Gini\\Process\\Engine\\SJTU\\Task', 'doUpdate'];
-        if (method_exists($customizedMethod)) {
-            $bool = call_user_func($customizedMethod, $task, $description);
+        if (method_exists('\\Gini\\Process\\Engine\\SJTU\\Task', 'doUpdate')) {
+            $bool = call_user_func($customizedMethod, $this, $description);
         }
 
         if (!$bool) return;
