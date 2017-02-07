@@ -56,6 +56,12 @@ class SJTU implements \Gini\Process\IEngine
             throw new \Gini\Process\Engine\Exception();
         }
 
+        if (!$isRestart && class_exists('\Gini\ORM\SJTU\BPM\Process\Instance\Data')) {
+            if (!\Gini\ORM\SJTU\BPM\Process\Instance\Data::init($instance, $data)) {
+                throw new \Gini\Process\Engine\Exception();
+            }
+        }
+
         $instance->start($isRestart);
 
         return $instance;
