@@ -112,11 +112,15 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
             'group'=> '',
             'user'=> T('系统')
         ];
-        $description = [
-            'a' => T('**系统** 自动 **审核通过**'),
-            't' => $now,
-            'd' => $message,
-        ];
+
+        $description = null;
+        if (!is_null($message)) {
+            $description = [
+                'a' => T('**系统** 自动 **审核通过**'),
+                't' => $now,
+                'd' => $message,
+            ];
+        }
         return $this->_doUpdate($upData, $description);
     }
 
