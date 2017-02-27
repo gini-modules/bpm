@@ -2,7 +2,7 @@
     "id": "bpm",
     "name": "BPM Process Engine Client",
     "description": "App description...",
-    "version": "0.1.19",
+    "version": "0.1.20",
     "dependencies": {
         "gini": "*",
         "chem-db-client": "*"
