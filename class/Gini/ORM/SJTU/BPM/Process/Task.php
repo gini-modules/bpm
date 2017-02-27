@@ -113,7 +113,7 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
             'user'=> T('系统')
         ];
         $description = [
-            'a' => $message ?: T('**系统** 自动 **审核通过**'),
+            'a' => T('**系统** 自动 **审核通过**'),
             't' => $now,
             'd' => $message,
         ];
