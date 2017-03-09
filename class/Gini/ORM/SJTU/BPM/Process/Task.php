@@ -159,9 +159,17 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
             'run_pid'=> getmypid()
         ]);
 
-        call_user_func_array($this->auto_callback, [
-            $this
-        ]);
+        try {
+            call_user_func_array($this->auto_callback, [
+                $this
+            ]);
+        } catch (\Exception $e) {
+            $this->update([
+                'status'=> self::STATUS_PENDING,
+                'run_date'=> date('Y-m-d H:i:s'),
+                'run_pid'=> 0
+            ]);
+        }
     }
 }
 
