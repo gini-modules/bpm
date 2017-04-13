@@ -36,7 +36,16 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
 
     public function next()
     {
-        return $this->_execute();
+        $bool = $this->_execute();
+        
+        $cusMethod = ['\\Gini\\Process\\Engine\\SJTU\\Task', 'saveTaskInfo'];
+        if (method_exists('\\Gini\\Process\\Engine\\SJTU\\Task', 'saveTaskInfo')) {
+            $task = those('sjtu/bpm/process/task')->whose('instance')->is($this)
+                ->orderBy('ctime', 'desc')->orderBy('id', 'desc')->current();
+            $bool = call_user_func($cusMethod, $task);
+        }
+
+        return $bool;
     }
 
     private function _execute($isRestart = false)
