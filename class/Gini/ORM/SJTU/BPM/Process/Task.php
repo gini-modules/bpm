@@ -47,9 +47,9 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
         $customizedMethod = ['\\Gini\\Process\\Engine\\SJTU\\Task', 'doUpdate'];
         if (method_exists('\\Gini\\Process\\Engine\\SJTU\\Task', 'doUpdate')) {
             $bool = call_user_func($customizedMethod, $this, $description);
+            if (!$bool) return;
         }
 
-        if (!$bool) return;
         $bool = $this->update($data);
 
         $customizedDoneMethod = ['\\Gini\\Process\\Engine\\SJTU\\Task', 'doneUpdate'];
