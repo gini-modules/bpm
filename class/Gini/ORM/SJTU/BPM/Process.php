@@ -13,7 +13,7 @@ class Process extends \Gini\ORM\Object
 
     public function getNextTaskInfo($task=null)
     {
-        $rules = $this->rules;
+        $rules = (array) $this->rules;
         if (!$task || !$task->id) {
             return [key($rules), current($rules)];
         }
