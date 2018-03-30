@@ -15,6 +15,10 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
     public $run_date = 'datetime';
 
     // TODO 如何避免task被重复创建
+    protected static $db_index = [
+        'instance',
+        'ctime',
+    ];
 
     public function isEnd()
     {

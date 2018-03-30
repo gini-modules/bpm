@@ -12,6 +12,7 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
 
     protected static $db_index = [
         'unique:tag',
+        'status',
         'last_run_time',
     ];
 
@@ -37,7 +38,7 @@ class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
     public function next()
     {
         $bool = $this->_execute();
-        
+
         $cusMethod = ['\\Gini\\Process\\Engine\\SJTU\\Task', 'saveTaskInfo'];
         if (method_exists('\\Gini\\Process\\Engine\\SJTU\\Task', 'saveTaskInfo')) {
             $task = those('sjtu/bpm/process/task')->whose('instance')->is($this)
