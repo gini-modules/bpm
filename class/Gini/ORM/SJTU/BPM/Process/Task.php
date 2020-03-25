@@ -13,6 +13,7 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
     public $status = 'int';
     // auto task的开始执行时间
     public $run_date = 'datetime';
+    public $user_id = 'int,default:0';
 
     // TODO 如何避免task被重复创建
     protected static $db_index = [
@@ -73,7 +74,8 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
             'message'=> $message,
             'date'=> $now,
             'group'=> $this->candidate_group->title,
-            'user'=> $user->name
+            'user'=> $user->name,
+            'user_id'=> $user->id
         ];
         $description = [
             'a' => T('**:group** **:name** **审核通过**', [
@@ -96,7 +98,8 @@ class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
             'message'=> $message,
             'date'=> $now,
             'group'=> $this->candidate_group->title,
-            'user'=> $user->name
+            'user'=> $user->name,
+            'user_id'=> $user->id
         ];
         $user = $user ?: _G('ME');
         $description = [
