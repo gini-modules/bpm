@@ -167,5 +167,54 @@ class Process extends \Gini\ORM\Object
 
         return $query->value();
     }
+
+    // 易制毒审批记录查询
+    public function drugInstances($start=0, $perpage=25, $user=null, $params=[], $all=false)
+    {
+        $db = \Gini\Database::db();
+        $sql = "SELECT distinct i.id FROM sjtu_bpm_process_instance i LEFT JOIN plan p ON SUBSTRING_INDEX(i.tag,'#',-1) =  p.id  LEFT JOIN sjtu_bpm_process_task t ON i.id = t.instance_id WHERE ";
+        $countSQL = "SELECT count(distinct i.id) FROM sjtu_bpm_process_instance i LEFT JOIN plan p ON SUBSTRING_INDEX(i.tag,'#',-1) =  p.id  LEFT JOIN sjtu_bpm_process_task t ON i.id = t.instance_id WHERE ";
+        $where = ["i.process_id = {$db->quote($this->id)}"];
+
+        $enableGids = [];
+        if (!is_null($user)) {
+            $groups = $this->getGroups($user);
+            foreach ($groups as $group) {
+                $enableGids[] = $group->id;
+            }
+            if (empty($enableGids)) return;
+            $where[] = "t.candidate_group_id in ({$db->quote($enableGids)})";
+        }
+
+        //指定课题组
+        if (@!empty($params['group'])) {
+            $group = $db->query("select id from gapper_agent_group where title = {$db->quote($params['group'])}")->value();
+            if (!$group) return false;
+            $where[] = "p.group_id = {$db->quote($group)}";
+        }
+
+        if (@!empty($params['status'])) {
+            $status = ["1"=>"-1","2"=>0][$params['status']];
+            $where[] = "i.status = {$db->quote($status)}";
+        }
+        if (@!empty($params['stime']) && @!empty($params['etime'])) $where[] = "p.date > {$db->quote($params['stime'])} AND p.date < {$db->quote($params['etime'])}";
+        if (@!empty($params['school'])) $where[] = "p.school_name = {$db->quote($params['school'])}";
+
+        $sql = $sql . implode(" AND ", $where) ." ORDER BY i.id DESC";
+        if (!$all) {
+            $sql = $sql . " LIMIT {$start},{$perpage}";
+        }
+        $countSQL = $countSQL . implode(" AND ", $where);
+        $total = $db->query($countSQL)->value();
+        if (!$total) return;
+
+        $query = $db->query($sql);
+        $instances = [];
+        if ($query) foreach ($query->rows() as $obj) {
+            $instances[$obj->id] = a('sjtu/bpm/process/instance', $obj->id);
+        }
+
+        return [$total, $instances];
+    }
 }
 
