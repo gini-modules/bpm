@@ -193,6 +193,23 @@ class Process extends \Gini\ORM\Object
             $where[] = "p.group_id = {$db->quote($group)}";
         }
 
+
+        if (@!empty($params['requester'])) {
+            $where[] = "p.requester_name = {$db->quote($params['requester'])}";
+        }
+
+        if (@!empty($params['owner'])) {
+            $where[] = "p.group_owner = {$db->quote($params['owner'])}";
+        }
+
+        if (@!empty($params['chem_name'])) {
+            $where[] = "p.q_cache_chem_name like {$db->quote('%'.$params['chem_name'].'%')}";
+        }
+
+        if (@!empty($params['vendor'])) {
+            $where[] = "p.q_cache_vendor_name like {$db->quote('%'.$params['vendor'].'%')}";
+        }
+
         if (@!empty($params['status'])) {
             $status = ["1"=>"-1","2"=>0][$params['status']];
             $where[] = "i.status = {$db->quote($status)}";
