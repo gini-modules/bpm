@@ -5,7 +5,7 @@ namespace Gini\ORM\SJTU\BPM\Process;
 class_exists('\Gini\Those');
 
 // 每个process流程都可以定义一定量的分组
-class Group extends \Gini\ORM\Object implements \Gini\Process\IGroup
+class Group extends \Gini\ORM\Base implements \Gini\Process\IGroup
 {
     public $name = 'string:120';
     public $title = 'string:120';

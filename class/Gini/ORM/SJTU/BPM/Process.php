@@ -3,7 +3,7 @@
 namespace Gini\ORM\SJTU\BPM;
 
 // 流程定义
-class Process extends \Gini\ORM\Object
+class Process extends \Gini\ORM\Base
 {
     public $name = 'string:120';
     public $parent = 'object:sjtu/bpm/process';

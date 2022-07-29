@@ -3,7 +3,7 @@
 namespace Gini\ORM\SJTU\BPM\Process;
 
 // 任务节点
-class Task extends \Gini\ORM\Object implements \Gini\Process\ITask
+class Task extends \Gini\ORM\Base implements \Gini\Process\ITask
 {
     public $process = 'object:sjtu/bpm/process';
     public $instance = 'object:sjtu/bpm/process/instance';

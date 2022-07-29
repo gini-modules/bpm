@@ -2,7 +2,7 @@
 
 namespace Gini\ORM\SJTU\BPM\Process;
 
-class Instance extends \Gini\ORM\Object implements \Gini\Process\IInstance
+class Instance extends \Gini\ORM\Base implements \Gini\Process\IInstance
 {
     public $process = 'object:sjtu/bpm/process';
     public $data = 'array';
